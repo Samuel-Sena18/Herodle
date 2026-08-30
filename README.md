@@ -21,8 +21,3 @@ docker compose down -v
 ```
 
 Após inicializado, o webservice pode ser acessado em `http://localhost:3000/`. A interface gráfica de controle do banco de dados pode ser acessada em `http://localhost:8081`.
-
-
-## Deploy
-
-Configure os detalhes de deploy no arquivo `.env`, seguindo o exemplo presente em `.env.example`.
