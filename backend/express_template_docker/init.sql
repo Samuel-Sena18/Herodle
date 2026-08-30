@@ -11,7 +11,7 @@ CREATE TABLE herois(
 
 CREATE TABLE heroi_hoje(
     id INTEGER PRIMARY KEY REFERENCES herois(id)
-)
+);
 
 INSERT INTO herois (nome, universo, equipe_atual, especie, genero, ano_aparicao) VALUES
 ('Superman', 'DC', 'Liga da Justiça', 'Kryptoniano', 'Masculino', 1938),
