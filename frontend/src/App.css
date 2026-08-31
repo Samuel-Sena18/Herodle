@@ -1,0 +1,93 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url("./imgs/imagem-destaque-melhores-equipes-de-super-herois.jpg");
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+h1, h2{
+  color: aliceblue;
+}
+
+.busca-container {
+  position: relative;
+  width: 300px;
+  border: solid 1px black;
+}
+
+.busca-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #7a1f1f;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.busca-lista {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  list-style: none;
+  margin: 4px 0 0 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 2px solid #7a1f1f;
+  border-radius: 6px;
+  background-color: #e8dcc4;
+  z-index: 10;
+}
+
+.busca-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #7a1f1f;
+  cursor: pointer;
+}
+
+.busca-item:last-child {
+  border-bottom: none;
+}
+
+.busca-item:hover {
+  background-color: #d8c8a8;
+}
+
+
+.chute {
+    display: flex;
+    gap: 20px;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 20px;
+}
+
+.chute li{
+    list-style-type: none;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.acerto{
+    background-color: greenyellow;
+}
+
+.erro{
+    background-color: red;
+}
