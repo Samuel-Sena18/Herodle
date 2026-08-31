@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Busca from './components/Busca'
+import ListaChute from './components/ListaChute'
+import Vitoria from './components/Vitoria'
 
 function App() {
+  const [dadosOriginais, setDadosOriginais] = useState([])
   const [dados, setDados] = useState([])
   const [nome, setNome] = useState("")
   const [chute, setChute] = useState([])
   const [listaIdChute, setListaIdChute] = useState([])
   const [idHeroiHoje, setIdHeroiHoje] = useState(null)
   const [heroiHoje, setHeroiHoje] = useState([])
+  const [acertou, setAcertou] = useState(false)
 
   function mudaNome(e) {
     setNome(e.target.value)
@@ -23,6 +27,10 @@ function App() {
     fetch("http://localhost:3000/personagens/heroi_hoje")
       .then(response => response.json())
       .then(data => setIdHeroiHoje(data.id))
+
+    fetch("http://localhost:3000/personagens")
+      .then(response => response.json())
+      .then(data => setDadosOriginais(data))
   }, [])
 
   useEffect(() => {
@@ -49,12 +57,22 @@ function App() {
     }
   }, [dados, idHeroiHoje])
 
+  if(acertou){
+    return(
+      <>
+        <Vitoria></Vitoria>
+      </>
+    )
+  }
+
+
   if (!dados.length && dados.codigo == 0) {
     return (
       <>
         <h1>HeroDle</h1>
         <h2>Teste seus conhecimentos</h2>
         <Busca mudaNome={mudaNome} dados={dados} nome={nome} mostrarLista={false}></Busca> <br />
+        <ListaChute listaChute={listaIdChute} dados={dadosOriginais} heroiHoje={heroiHoje} setAcertou={setAcertou}></ListaChute>
       </>
     )
   } else {
@@ -63,6 +81,7 @@ function App() {
         <h1>HeroDle</h1>
         <h2>Teste seus conhecimentos</h2>
         <Busca mudaNome={mudaNome} dados={dados} nome={nome} mostrarLista={true} tentativa={tentativa}></Busca> <br />
+        <ListaChute listaChute={listaIdChute} dados={dadosOriginais} heroiHoje={heroiHoje} setAcertou={setAcertou}></ListaChute>
       </>
     )
   }
