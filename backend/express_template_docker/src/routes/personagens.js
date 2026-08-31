@@ -55,11 +55,11 @@ router.post("/heroi_hoje", async(req, res) => {
         if(!r3.rowCount){
             throw new Error("Erro ao deletar heroí de ontem")
         }
-        const { nome } = req.body || {}
-        if(!nome){
+        const { id } = req.body || {}
+        if(!id){
             throw new Error("Parâmetros incompletos")
         }
-        const r2 = await db.query("INSERT INTO heroi_hoje(nome) VALUES($1) RETURNING *", [nome])
+        const r2 = await db.query("INSERT INTO heroi_hoje(id) VALUES($1) RETURNING *", [id])
         if(!r2.rowCount){
             throw new Error("Erro ao adicionar heroí de hoje")
         }
