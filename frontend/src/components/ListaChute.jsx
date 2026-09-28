@@ -1,3 +1,9 @@
+const iconesUniverso = {
+    "Marvel": "🕷️",
+    "DC": "🦇",
+    "Invencível": "🟣",
+}
+
 function ListaChute(props) {
     let chutados = []
     for (let i = 0; i < props.dados.length; i++) {
@@ -52,10 +58,13 @@ function ListaChute(props) {
                 classeAno = "acerto"
             }
 
+            const icone = iconesUniverso[personagem.universo] || "❔"
+            const marcador = classeNome === "acerto" ? "✔️" : "✖️"
+
             chutados.unshift(
                 <div key={personagem.id} className="chute">
-                    <li className={classeNome}>{personagem.nome}</li>
-                    <li className={classeUniverso}>{personagem.universo}</li>
+                    <li className={classeNome}>{marcador} {personagem.nome}</li>
+                    <li className={classeUniverso}>{icone} {personagem.universo}</li>
                     <li className={classeEquipe}>{personagem.equipe_atual}</li>
                     <li className={classeEspecie}>{personagem.especie}</li>
                     <li className={classeGenero}>{personagem.genero}</li>
