@@ -1,41 +1,47 @@
+import { useRef } from 'react'
+
 function Busca(props) {
-    function limpar(){
+    const inputRef = useRef(null)
 
+    function limpar() {
+        if (inputRef.current) {
+            inputRef.current.value = ""
+        }
+        props.mudaNome({ target: { value: "" } })
     }
 
-    if (!props.nome || !props.dados || props.dados.length == 0 || !props.mostrarLista) {
-        return (
-            <div className="busca-container">
-                <input
-                    type="text"
-                    placeholder="Buscar personagem..."
-                    onChange={props.mudaNome}
-                    className="busca-input"
-                />
-            </div>
-        )
+    function selecionar(personagem) {
+        props.tentativa(personagem)
+        limpar()
     }
-    if(props.mostrarLista){
-        return (
-            <div className="busca-container">
-                <input
-                    type="text"
-                    placeholder="Buscar personagem..."
-                    onChange={props.mudaNome}
-                    className="busca-input"
-                />
+
+    const semResultado = props.mostrarLista && props.nome && props.dados && props.dados.length === 0
+
+    return (
+        <div className="busca-container">
+            <input
+                ref={inputRef}
+                type="text"
+                placeholder="Buscar personagem..."
+                onChange={props.mudaNome}
+                className="busca-input"
+            />
+            {props.mostrarLista && props.dados && props.dados.length > 0 && (
                 <ul className="busca-lista">
                     {props.dados.map((personagem) => (
                         <li key={personagem.id} className="busca-item"
-                        onClick={() => props.tentativa(personagem)}
+                            onClick={() => selecionar(personagem)}
                         >
                             {personagem.nome}
                         </li>
                     ))}
                 </ul>
-            </div>
-        )
-    }
+            )}
+            {semResultado && (
+                <p className="busca-sem-resultado">Nenhum herói encontrado</p>
+            )}
+        </div>
+    )
 }
 
 export default Busca

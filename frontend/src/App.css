@@ -91,3 +91,9 @@ h1, h2{
 .erro{
     background-color: red;
 }
+
+.busca-sem-resultado {
+  margin: 8px 0 0 0;
+  color: #7a1f1f;
+  font-size: 14px;
+}
