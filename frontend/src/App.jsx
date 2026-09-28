@@ -4,6 +4,8 @@ import Busca from './components/Busca'
 import ListaChute from './components/ListaChute'
 import Vitoria from './components/Vitoria'
 
+const MAX_TENTATIVAS = 6
+
 function App() {
   const [dadosOriginais, setDadosOriginais] = useState([])
   const [dados, setDados] = useState([])
@@ -13,6 +15,7 @@ function App() {
   const [idHeroiHoje, setIdHeroiHoje] = useState(null)
   const [heroiHoje, setHeroiHoje] = useState([])
   const [acertou, setAcertou] = useState(false)
+  const [erroCarregamento, setErroCarregamento] = useState(false)
 
   function mudaNome(e) {
     setNome(e.target.value)
@@ -27,10 +30,12 @@ function App() {
     fetch("http://localhost:3000/personagens/heroi_hoje")
       .then(response => response.json())
       .then(data => setIdHeroiHoje(data.id))
+      .catch(() => setErroCarregamento(true))
 
     fetch("http://localhost:3000/personagens")
       .then(response => response.json())
       .then(data => setDadosOriginais(data))
+      .catch(() => setErroCarregamento(true))
   }, [])
 
   useEffect(() => {
@@ -47,6 +52,7 @@ function App() {
           setDados([])
         }
       })
+      .catch(() => setDados([]))
   }, [nome, listaIdChute])
 
   useEffect(() => {
@@ -57,34 +63,44 @@ function App() {
     }
   }, [dados, idHeroiHoje])
 
-  if(acertou){
-    return(
+  const perdeu = !acertou && listaIdChute.length >= MAX_TENTATIVAS
+
+  if (erroCarregamento) {
+    return (
       <>
-        <Vitoria></Vitoria>
+        <h1>HeroDle</h1>
+        <p>Não foi possível carregar o jogo agora. Tente novamente mais tarde.</p>
       </>
     )
   }
 
-
-  if (!dados.length && dados.codigo == 0) {
+  if (acertou) {
     return (
       <>
-        <h1>HeroDle</h1>
-        <h2>Teste seus conhecimentos</h2>
-        <Busca mudaNome={mudaNome} dados={dados} nome={nome} mostrarLista={false}></Busca> <br />
-        <ListaChute listaChute={listaIdChute} dados={dadosOriginais} heroiHoje={heroiHoje} setAcertou={setAcertou}></ListaChute>
-      </>
-    )
-  } else {
-    return (
-      <>
-        <h1>HeroDle</h1>
-        <h2>Teste seus conhecimentos</h2>
-        <Busca mudaNome={mudaNome} dados={dados} nome={nome} mostrarLista={true} tentativa={tentativa}></Busca> <br />
-        <ListaChute listaChute={listaIdChute} dados={dadosOriginais} heroiHoje={heroiHoje} setAcertou={setAcertou}></ListaChute>
+        <Vitoria tentativas={listaIdChute.length} maxTentativas={MAX_TENTATIVAS}></Vitoria>
       </>
     )
   }
+
+  if (perdeu) {
+    return (
+      <>
+        <h1>HeroDle</h1>
+        <h2>Não foi dessa vez 😔</h2>
+        <p>O herói de hoje era: <strong>{heroiHoje.nome}</strong></p>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <h1>HeroDle</h1>
+      <h2>Teste seus conhecimentos</h2>
+      <p>Tentativas: {listaIdChute.length}/{MAX_TENTATIVAS}</p>
+      <Busca mudaNome={mudaNome} dados={dados} nome={nome} mostrarLista={!!dados.length} tentativa={tentativa}></Busca> <br />
+      <ListaChute listaChute={listaIdChute} dados={dadosOriginais} heroiHoje={heroiHoje} setAcertou={setAcertou}></ListaChute>
+    </>
+  )
 }
 
 export default App
